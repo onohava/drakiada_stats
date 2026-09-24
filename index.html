@@ -6,11 +6,11 @@
 <title>Drakiáda</title>
 <style>
 *{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
-body{height:100dvh;max-width:640px;margin:auto;display:flex;flex-direction:column;gap:12px;padding:16px;background:#fafafa;user-select:none;transition:opacity .3s}
+body{height:100dvh;max-width:640px;margin:auto;display:flex;flex-direction:column;gap:min(12px,2vh);padding:min(16px,3vh);background:#fafafa;user-select:none;transition:opacity .3s}
 .off{opacity:.35}
-.item{flex:1;min-height:0;display:flex;align-items:stretch;gap:12px;padding:12px;border-radius:20px;background:var(--c);color:#fff}
+.item{flex:1;min-height:0;display:flex;align-items:stretch;gap:12px;padding:min(12px,2vh);border-radius:20px;background:var(--c);color:#fff}
 .item span{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:center;white-space:nowrap;font-size:min(5vmin,28px);line-height:1.1}
-.item b{font-size:min(13vmin,96px);line-height:1}
+.item b{font-size:min(12vmin,96px);line-height:1}
 .item button{border:0;border-radius:14px;background:#fff3;color:#fff;font-size:min(10vmin,64px);touch-action:manipulation}
 .item button:first-child{flex:0 0 20%}
 .item button:last-child{flex:0 0 32%}
@@ -21,6 +21,7 @@ body{height:100dvh;max-width:640px;margin:auto;display:flex;flex-direction:colum
 <div class="item" style="--c:#e8833a" data-k="palacinka"><button>−</button><span>🥞 Palačinka<b>0</b></span><button>+</button></div>
 <div class="item" style="--c:#8b4a2b" data-k="kofola"><button>−</button><span>🥤 Kofola<b>0</b></span><button>+</button></div>
 <div class="item" style="--c:#d4a537" data-k="buchta"><button>−</button><span>🍰 Buchta<b>0</b></span><button>+</button></div>
+<div class="item" style="--c:#3a7ca5" data-k="pruvodka"><button>−</button><span>🎫 Průvodka<b>0</b></span><button>+</button></div>
 <script>
 const db = "https://drakiada-default-rtdb.europe-west1.firebasedatabase.app/drakiada"
 let s = {}
