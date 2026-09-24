@@ -26,7 +26,13 @@ const db = "https://drakiada-default-rtdb.europe-west1.firebasedatabase.app/drak
 let s = {}
 const rows = document.querySelectorAll(".item")
 const render = () => rows.forEach(r => r.querySelector("b").textContent = s[r.dataset.k] || 0)
-const add = (k, n) => fetch(`${db}/${k}.json`, {method: "PUT", body: JSON.stringify({".sv": {increment: n}})})
+const add = (k, n) => {
+  s[k] = (s[k] || 0) + n
+  render()
+  fetch(`${db}/${k}.json`, {method: "PUT", body: JSON.stringify({".sv": {increment: n}})})
+    .then(r => r.ok || Promise.reject())
+    .catch(() => { s[k] -= n; render() })
+}
 rows.forEach(r => {
   const [minus, plus] = r.querySelectorAll("button")
   const k = r.dataset.k
