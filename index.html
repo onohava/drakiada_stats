@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Drakiáda</title>
+<style>
+*{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
+body{height:100dvh;max-width:640px;margin:auto;display:flex;flex-direction:column;gap:12px;padding:16px;background:#fafafa;user-select:none;transition:opacity .3s}
+.off{opacity:.35}
+.item{flex:1;min-height:0;display:flex;align-items:stretch;gap:12px;padding:12px;border-radius:20px;background:var(--c);color:#fff}
+.item span{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:center;white-space:nowrap;font-size:min(5vmin,28px);line-height:1.1}
+.item b{font-size:min(13vmin,96px);line-height:1}
+.item button{border:0;border-radius:14px;background:#fff3;color:#fff;font-size:min(10vmin,64px);touch-action:manipulation}
+.item button:first-child{flex:0 0 20%}
+.item button:last-child{flex:0 0 32%}
+.item button:active{background:#fff6}
+</style>
+</head>
+<body class="off">
+<div class="item" style="--c:#e8833a" data-k="palacinka"><button>−</button><span>🥞 Palačinka<b>0</b></span><button>+</button></div>
+<div class="item" style="--c:#8b4a2b" data-k="kofola"><button>−</button><span>🥤 Kofola<b>0</b></span><button>+</button></div>
+<div class="item" style="--c:#d4a537" data-k="buchta"><button>−</button><span>🍰 Buchta<b>0</b></span><button>+</button></div>
+<script>
+const db = "https://drakiada-default-rtdb.europe-west1.firebasedatabase.app/drakiada"
+let s = {}
+const rows = document.querySelectorAll(".item")
+const render = () => rows.forEach(r => r.querySelector("b").textContent = s[r.dataset.k] || 0)
+const add = (k, n) => fetch(`${db}/${k}.json`, {method: "PUT", body: JSON.stringify({".sv": {increment: n}})})
+rows.forEach(r => {
+  const [minus, plus] = r.querySelectorAll("button")
+  const k = r.dataset.k
+  minus.onclick = () => s[k] > 0 && add(k, -1)
+  plus.onclick = () => add(k, 1)
+})
+const update = (e, replace) => {
+  const {path, data} = JSON.parse(e.data)
+  if (path === "/") { if (replace) s = {}; Object.assign(s, data) } else s[path.slice(1)] = data
+  render()
+}
+const es = new EventSource(db + ".json")
+es.addEventListener("put", e => update(e, true))
+es.addEventListener("patch", e => update(e))
+es.onopen = () => document.body.classList.remove("off")
+es.onerror = () => document.body.classList.add("off")
+</script>
+</body>
+</html>
